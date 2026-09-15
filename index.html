@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سوق السيارات — المغرب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #16233B;
+    --ink-soft: #3C4A63;
+    --paper: #EFEAE0;
+    --card: #FFFFFF;
+    --accent: #C98A2C;
+    --accent-deep: #96621B;
+    --line: #D8D2C4;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== Header ===== */
+  header {
+    background: var(--ink);
+    color: #fff;
+    padding: 18px 16px 22px;
+    position: relative;
+  }
+  header::after {
+    content: "";
+    position: absolute;
+    bottom: 0; right: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+  header h1 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 700;
+  }
+  header p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #C7CEDB;
+  }
+
+  /* ===== Search + filters ===== */
+  .search-wrap {
+    padding: 14px 16px 0;
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 15px;
+    width: 100%;
+    color: var(--ink);
+  }
+  .filters {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .filters select {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink-soft);
+  }
+
+  /* ===== Listing count ===== */
+  .count {
+    padding: 14px 16px 4px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .count strong { color: var(--ink); }
+
+  /* ===== Cards ===== */
+  .listings {
+    padding: 8px 16px 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .card .photo {
+    height: 160px;
+    background: #DCD5C4 center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8A8272;
+    font-size: 13px;
+  }
+  .card .body {
+    padding: 12px 14px 14px;
+  }
+  .card .price {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .card .price span {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    margin-right: 4px;
+  }
+  .card .model {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 4px 0 2px;
+  }
+  .card .meta {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .card .meta span:not(:last-child)::after {
+    content: "·";
+    margin: 0 6px;
+    color: var(--line);
+  }
+  .whatsapp-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--ink);
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  .whatsapp-btn:active { background: var(--ink-soft); }
+
+  /* ===== Floating add button ===== */
+  .add-btn {
+    position: fixed;
+    bottom: 18px;
+    left: 16px;
+    right: 16px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 14px;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 14px rgba(150, 98, 27, 0.35);
+  }
+  .add-btn:active { background: var(--accent-deep); }
+
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>سوق السيارات</h1>
+    <p>بيع وشري السيارات المستعملة فالمغرب</p>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="ابحث بالماركة أو الموديل...">
+    </div>
+    <div class="filters">
+      <select id="cityFilter">
+        <option value="">كل المدن</option>
+        <option value="الدار البيضاء">الدار البيضاء</option>
+        <option value="الرباط">الرباط</option>
+        <option value="مراكش">مراكش</option>
+        <option value="فاس">فاس</option>
+        <option value="طنجة">طنجة</option>
+      </select>
+      <select id="priceFilter">
+        <option value="">كل الأثمنة</option>
+        <option value="50000">أقل من 50,000 درهم</option>
+        <option value="100000">أقل من 100,000 درهم</option>
+        <option value="200000">أقل من 200,000 درهم</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="count"><strong id="resultCount">0</strong> سيارة متوفرة</div>
+
+  <div class="listings" id="listings"></div>
+
+  <button class="add-btn" onclick="alert('هنا غادي نربطو استمارة إضافة سيارة')">+ أضف سيارتك</button>
+
+<script>
+  // ===== بيانات تجريبية — غادي تتعوض بـ Google Sheets API =====
+  const cars = [
+    { model: "Dacia Logan 2018", price: 68000, city: "الدار البيضاء", phone: "212600000001" },
+    { model: "Renault Clio 2016", price: 55000, city: "الرباط", phone: "212600000002" },
+    { model: "Peugeot 208 2019", price: 92000, city: "مراكش", phone: "212600000003" },
+    { model: "Volkswagen Golf 2015", price: 78000, city: "فاس", phone: "212600000004" },
+    { model: "Hyundai Accent 2020", price: 115000, city: "طنجة", phone: "212600000005" },
+  ];
+
+  const listingsEl = document.getElementById('listings');
+  const countEl = document.getElementById('resultCount');
+  const searchInput = document.getElementById('searchInput');
+  const cityFilter = document.getElementById('cityFilter');
+  const priceFilter = document.getElementById('priceFilter');
+
+  function formatPrice(n) {
+    return n.toLocaleString('en-US');
+  }
+
+  function render() {
+    const q = searchInput.value.trim();
+    const city = cityFilter.value;
+    const maxPrice = priceFilter.value ? parseInt(priceFilter.value) : null;
+
+    const filtered = cars.filter(c => {
+      const matchesQuery = q === "" || c.model.includes(q);
+      const matchesCity = city === "" || c.city === city;
+      const matchesPrice = maxPrice === null || c.price <= maxPrice;
+      return matchesQuery && matchesCity && matchesPrice;
+    });
+
+    countEl.textContent = filtered.length;
+
+    if (filtered.length === 0) {
+      listingsEl.innerHTML = '<div class="empty">ماكاينش سيارات ديال هاد البحث دابا</div>';
+      return;
+    }
+
+    listingsEl.innerHTML = filtered.map(c => `
+      <div class="card">
+        <div class="photo">صورة السيارة</div>
+        <div class="body">
+          <div class="price">${formatPrice(c.price)}<span>درهم</span></div>
+          <div class="model">${c.model}</div>
+          <div class="meta"><span>${c.city}</span></div>
+          <a class="whatsapp-btn" href="https://wa.me/${c.phone}" target="_blank">تواصل عبر واتساب</a>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  searchInput.addEventListener('input', render);
+  cityFilter.addEventListener('change', render);
+  priceFilter.addEventListener('change', render);
+
+  render();
+</script>
+
+</body>
+</html>
